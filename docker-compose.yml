@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  yash-postgres:
+    image: "postgres:9.6-alpine"
+    container_name: yash-postgres
+    volumes:
+      - yash-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=YASHDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  yash-app:
+    image: dscharan2001/yash-app
+    container_name: yash-app
+    environment:
+      - DB_SERVER=yash-postgres
+      - POSTGRES_DB=YASHDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    ports:
+      - 8235:8235
+    links:
+      - yash-postgres
+volumes:
+  yash-data:
